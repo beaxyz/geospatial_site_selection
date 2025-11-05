@@ -32,9 +32,3 @@ A streamlined geospatial analysis application for identifying optimal data cente
 ## Data Sources
 For demonstration purposes, the app includes:
 - Boundary & road data from Ordnance Survey
-
-
-
----
-
-**Built with ❤️ using Databricks Geospatial Analytics and Streamlit**
