@@ -624,7 +624,7 @@ config = {
 }
 
 
-def render_kepler(data: Dict[str, pd.DataFrame], config=config, height=800, width=1500) -> KeplerGl:
+def render_kepler(data: Dict[str, pd.DataFrame], config=config, height=800, width=3000) -> KeplerGl:
     kmap = KeplerGl(height=height, width=width)
 
     for name, df in data.items():
@@ -634,7 +634,6 @@ def render_kepler(data: Dict[str, pd.DataFrame], config=config, height=800, widt
     return kmap
 
 
-
 def kepler_html(kmap: KeplerGl) -> str:
     html = kmap._repr_html_()
     if isinstance(html, bytes):
@@ -642,8 +641,8 @@ def kepler_html(kmap: KeplerGl) -> str:
 
     html = (
         html
-        .replace(".height||400", f".height||{kmap.height}")
-        .replace("#container {width: 400px;", "#container {width: 100%;")
+        .replace(".height||300", f".height||{kmap.height}")
+        .replace("#container {width: 300px;", "#container {width: 100%;")
     )
 
     html += "<script>window.dispatchEvent(new Event('resize'));</script>"

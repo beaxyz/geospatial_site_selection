@@ -9,3 +9,5 @@ env:
     value: "4b9b953939869799"
   - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
     value: "false"
+  - name: STREAMLIT_SERVER_ENABLE_WEBSOCKET_COMPRESSION
+    value: "true"

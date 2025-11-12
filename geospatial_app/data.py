@@ -5,20 +5,18 @@ from databricks.sdk.core import Config
 import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
-from pyspark.sql import functions as F
+#from pyspark.sql import functions as F
 
+assert os.getenv("DATABRICKS_WAREHOUSE_ID"), "DATABRICKS_WAREHOUSE_ID is not set"
 
-
-#assert os.getenv("DATABRICKS_WAREHOUSE_ID"), "DATABRICKS_WAREHOUSE_ID is not set"
+#load_dotenv()
 cfg = Config()
-load_dotenv()
 
 def is_local_environment() -> bool:
-    """Return True when the code is running outside Databricks."""
-    return not os.getenv("DATABRICKS_RUNTIME_VERSION")
+    return not os.getenv("DATABRICKS_WAREHOUSE_ID")
 
 
-def sql_query(query: str) -> pd.DataFrame:
+def sql_query(query: str, user_token: str) -> pd.DataFrame:
     if is_local_environment():
         connection_args = {
         "server_hostname": os.getenv("DATABRICKS_HOST"),
@@ -30,7 +28,7 @@ def sql_query(query: str) -> pd.DataFrame:
         connection_args = {
         "server_hostname": cfg.host,
         "http_path": f"/sql/1.0/warehouses/{cfg.warehouse_id}",
-        "credentials_provider": cfg.authenticate
+        "access_token": user_token
     }
 
     with sql.connect(**connection_args) as connection:
@@ -38,6 +36,7 @@ def sql_query(query: str) -> pd.DataFrame:
             cursor.execute(query)
             return cursor.fetchall_arrow().to_pandas()
 
+user_token = st.context.headers.get('X-Forwarded-Access-Token')
 
 @st.cache_data()
 def developed_land_df(general_land_type: str = "All") -> pd.DataFrame:
@@ -50,7 +49,7 @@ def developed_land_df(general_land_type: str = "All") -> pd.DataFrame:
     else:
         query = query
 
-    return sql_query(query)
+    return sql_query(query, user_token = user_token)
 
 square_size_m2 = 1000
 
@@ -66,7 +65,7 @@ def undeveloped_land_df(general_land_type: str = "All") -> pd.DataFrame:
     else:
         query = query
 
-    return sql_query(query)
+    return sql_query(query,user_token)
 
 @st.cache_data()
 def road_node_df() -> pd.DataFrame:
@@ -74,7 +73,7 @@ def road_node_df() -> pd.DataFrame:
     select *
     from beatrice_liew.site_selection_geospatial.road_node_silver
     """
-    return sql_query(query)
+    return sql_query(query, user_token)
 
 @st.cache_data()
 def road_links_df() -> pd.DataFrame:
@@ -82,7 +81,7 @@ def road_links_df() -> pd.DataFrame:
     select *
     from beatrice_liew.site_selection_geospatial.road_links_silver
     """
-    return sql_query(query)
+    return sql_query(query, user_token)
 
 @st.cache_data()
 def bounding_box_df(general_land_type: str = "All", square_size_m2: int = 3000, number_of_sites: int = 10, distance_to_road_min: int = 100, distance_to_road_max: int = 1000) -> pd.DataFrame:
@@ -151,7 +150,7 @@ def bounding_box_df(general_land_type: str = "All", square_size_m2: int = 3000, 
                     order by distance_to_road_meters asc
                     limit {number_of_sites}"""
 
-    return sql_query(query)
+    return sql_query(query, user_token)
 
 if __name__ == "__main__":
     print(bounding_box_df(square_size_m2=1000, distance_to_road=1000, number_of_sites=10, general_land_type="All"))

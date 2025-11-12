@@ -1,3 +1,5 @@
+databricks-sdk>=0.46.0
+
 # Core Streamlit framework
 streamlit>=1.28.0
 streamlit-folium>=0.15.0
@@ -11,3 +13,4 @@ plotly>=5.17.0
 
 # KeplerGL
 keplergl
+streamlit-keplergl
