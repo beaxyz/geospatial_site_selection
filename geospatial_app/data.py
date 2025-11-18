@@ -13,7 +13,7 @@ load_dotenv()
 cfg = Config()
 
 def is_local_environment() -> bool:
-    return not os.getenv("DATABRICKS_RUNTIME_VERSION")
+    return not os.getenv("DATABRICKS_HOST")
 
 
 def sql_query(query: str, user_token: str) -> pd.DataFrame:
@@ -151,6 +151,7 @@ def bounding_box_df(general_land_type: str = "All", square_size_m2: int = 3000, 
                     limit {number_of_sites}"""
 
     return sql_query(query, user_token = user_token)
+
 
 if __name__ == "__main__":
     print(bounding_box_df(square_size_m2=1000, distance_to_road=1000, number_of_sites=10, general_land_type="All"))

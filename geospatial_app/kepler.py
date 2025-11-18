@@ -239,6 +239,121 @@ config = {
           }
         },
         {
+          "id": "Display",
+          "type": "geojson",
+          "config": {
+            "dataId": "Display",
+            "columnMode": "geojson",
+            "label": "Display",
+            "color": [255, 0, 0],
+            "highlightColor": [
+              252,
+              242,
+              26,
+              255
+            ],
+            "columns": {
+              "geojson": "geometry_wgs_84"
+            },
+            "isVisible": True,
+            "visConfig": {
+              "opacity": 0.8,
+              "strokeOpacity": 0.8,
+              "thickness": 0.5,
+              "strokeColor": [0, 0, 139],
+              "colorRange": {
+                "name": "Global Warming",
+                "type": "sequential",
+                "category": "Uber",
+                "colors": [
+                  "#4C0035",
+                  "#880030",
+                  "#B72F15",
+                  "#D6610A",
+                  "#EF9100",
+                  "#FFC300"
+                ]
+              },
+              "strokeColorRange": {
+                "name": "Global Warming",
+                "type": "sequential",
+                "category": "Uber",
+                "colors": [
+                  "#4C0035",
+                  "#880030",
+                  "#B72F15",
+                  "#D6610A",
+                  "#EF9100",
+                  "#FFC300"
+                ]
+              },
+              "radius": 10,
+              "sizeRange": [
+                0,
+                10
+              ],
+              "radiusRange": [
+                0,
+                50
+              ],
+              "heightRange": [
+                0,
+                500
+              ],
+              "elevationScale": 5,
+              "stroked": True,
+              "filled": True,
+              "enable3d": False,
+              "wireframe": False,
+              "fixedHeight": False
+            },
+            "hidden": False,
+            "textLabel": [
+              {
+                "field": None,
+                "color": [
+                  255,
+                  255,
+                  255
+                ],
+                "size": 18,
+                "offset": [
+                  0,
+                  0
+                ],
+                "anchor": "start",
+                "alignment": "center",
+                "outlineWidth": 0,
+                "outlineColor": [
+                  255,
+                  0,
+                  0,
+                  255
+                ],
+                "background": False,
+                "backgroundColor": [
+                  0,
+                  0,
+                  200,
+                  255
+                ]
+              }
+            ]
+          },
+          "visualChannels": {
+            "colorField": None,
+            "colorScale": "quantile",
+            "strokeColorField": None,
+            "strokeColorScale": "quantile",
+            "sizeField": None,
+            "sizeScale": "linear",
+            "heightField": None,
+            "heightScale": "linear",
+            "radiusField": None,
+            "radiusScale": "linear"
+          }
+        },
+        {
           "id": "Developed",
           "type": "geojson",
           "config": {

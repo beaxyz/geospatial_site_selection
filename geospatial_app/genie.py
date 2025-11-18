@@ -19,7 +19,7 @@ def start_genie_conversation(space_id, question):
     space_id = space_id,
     conversation_id = conversation.conversation_id,
     message_id = conversation.message_id,
-    attachment_id = conversation.attachments[0].attachment_id
+    attachment_id = conversation.attachments[0].attachment_id,
     )
     
     schema_list = [i.name for i in response.statement_response.manifest.schema.columns]

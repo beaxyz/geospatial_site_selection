@@ -1,3 +1,4 @@
+from pandas._libs.lib import count_level_2d
 from data import *
 import streamlit as st
 from kepler import *
@@ -42,8 +43,12 @@ with st.sidebar:
         "Undeveloped Land": undeveloped_land_df(general_land_type),
         "Bounding Box": bounding_box_df(general_land_type, square_size_m2, number_of_sites, distance_to_road_min, distance_to_road_max),
         "Road Nodes": road_node_df(),
-        "Road Links": road_links_df(),
+        "Road Links": road_links_df()
     }
+
+    display_df = st.session_state.get("display_polygon")
+    if display_df is not None:
+        data["Display"] = display_df
 
 st.title("Exeter Site Analysis")  
 with st.container():
@@ -65,6 +70,8 @@ with st.container():
             st.session_state.submit_from_button = False
         if "pending_question" not in st.session_state:
             st.session_state.pending_question = None
+        if "display_polygon" not in st.session_state:
+            st.session_state.display_polygon = None
 
         @st.fragment()
         def chat_interface(general_land_type, square_size_m2, number_of_sites, distance_to_road_min, distance_to_road_max):
@@ -129,9 +136,16 @@ with st.container():
                 st.session_state.messages = []
                 st.session_state.conversation_id = None
 
-            if st.button("Refesh & Clear Chat"):
-                clear_conversation()
-                st.rerun(scope = "fragment")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Refesh & Clear Chat"):
+                    clear_conversation()
+                    st.rerun(scope = "fragment")
+            with col2:
+                if st.button("Display on Map"):
+                    display_df = pd.DataFrame(st.session_state.messages[-1]["response_data"])
+                    st.session_state.display_polygon = display_df
+                    st.rerun()
 
 
         chat_interface(general_land_type, square_size_m2, number_of_sites, distance_to_road_min, distance_to_road_max)
