@@ -13,7 +13,7 @@ load_dotenv()
 cfg = Config()
 
 def is_local_environment() -> bool:
-    return not os.getenv("DATABRICKS_RUNTIME_VERSION")
+    return not os.getenv("DATABRICKS_HOST")
 
 
 def sql_query(query: str, user_token: str) -> pd.DataFrame:
